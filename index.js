@@ -110,7 +110,7 @@ console.log(`Saved ${data.length} trees in their respective tile files.`);
 for (let i = topLeftX; i <= bottomRightX; i++) {
   for (let j = topLeftY; j <= bottomRightY; j++) {
     console.log(
-      `Convert tile file ${dist}/${zoom}/${i}/${j}.json to valid JSON.`
+      `Convert tile file ${dist}/${zoom}/${i}/${j}${extension} to valid JSON.`
     );
     let content = fs
       .readFileSync(`${dist}/${zoom}/${i}/${j}${extension}`)
