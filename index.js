@@ -88,8 +88,6 @@ for (let i = 0; i < data.length; i++) {
     tree.geometry.coordinates[0]
   );
 
-  const treeAsJson = JSON.stringify(tree);
-
   if (!tree?.geometry?.coordinates) {
     console.log(`Skipped tree ${tree.id} because it has no coordinates`);
     continue;
