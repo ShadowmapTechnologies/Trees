@@ -105,3 +105,5 @@ dist
 
 # too big for Github
 vienna-trees.json
+
+.DS_Store
