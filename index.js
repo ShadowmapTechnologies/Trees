@@ -32,6 +32,7 @@ function getFilename(lat, lng) {
 function mapTree(tree) {
   // https://wiki.openstreetmap.org/wiki/Tag:natural=tree
 
+  const id = tree.properties.BAUM_ID;
   const coordinates = tree.geometry.coordinates;
   // STAMMUMFANG / 100.0 = circumference in meters
   const circumference = Math.round(tree.properties.STAMMUMFANG * 10) / 1000;
@@ -48,6 +49,7 @@ function mapTree(tree) {
   }
 
   return {
+    id,
     coordinates,
     circumference,
     height,
