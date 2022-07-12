@@ -32,14 +32,26 @@ function getFilename(lat, lng) {
 function mapTree(tree) {
   // https://wiki.openstreetmap.org/wiki/Tag:natural=tree
 
+  const coordinates = tree.geometry.coordinates;
+  // STAMMUMFANG / 100.0 = circumference in meters
+  const circumference = Math.round(tree.properties.STAMMUMFANG * 10) / 1000;
+  // HÖHE * 5 - 2.5 = height in meters
+  const height = tree.properties.BAUMHOEHE * 5 - 2.5;
+  // KRONENDURCHMESSER * 3 - 1.5 = diameter crown in meters
+  const diameter_crown = tree.properties.KRONENDURCHMESSER * 3 - 1.5;
+
+  if (circumference > 50) {
+    console.warn(
+      `tree ${tree.properties.BAUM_ID} has a circumference over 50 meters [${circumference}]. Skipping...`
+    );
+    return undefined;
+  }
+
   return {
-    coordinates: tree.geometry.coordinates,
-    // STAMMUMFANG / 100.0 = circumference in meters
-    circumference: Math.round(tree.properties.STAMMUMFANG * 10) / 1000,
-    // HÖHE * 5 - 2.5 = height in meters
-    height: tree.properties.BAUMHOEHE * 5 - 2.5,
-    // KRONENDURCHMESSER * 3 - 1.5 = diameter crown in meters
-    diameter_crown: tree.properties.KRONENDURCHMESSER * 3 - 1.5,
+    coordinates,
+    circumference,
+    height,
+    diameter_crown,
   };
 }
 
@@ -94,6 +106,10 @@ for (let i = 0; i < data.length; i++) {
   }
 
   const mappedTree = mapTree(tree);
+
+  if (mappedTree === undefined) {
+    continue;
+  }
 
   fs.appendFileSync(file, `,\n${JSON.stringify(mappedTree)}\n`);
   console.log(
