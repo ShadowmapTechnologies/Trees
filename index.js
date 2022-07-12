@@ -32,6 +32,27 @@ function getFilename(lat, lng) {
 function mapTree(tree) {
   // https://wiki.openstreetmap.org/wiki/Tag:natural=tree
 
+  if (tree.properties.STAMMUMFANG === 0) {
+    console.warn(
+      `tree ${tree.properties.BAUM_ID} has no circumference [${tree.properties.STAMMUMFANG}]. Skipping...`
+    );
+    return undefined;
+  }
+
+  if (tree.properties.BAUMHOEHE === 0) {
+    console.warn(
+      `tree ${tree.properties.BAUM_ID} has no height [${tree.properties.BAUMHOEHE}]. Skipping...`
+    );
+    return undefined;
+  }
+
+  if (tree.properties.KRONENDURCHMESSER === 0) {
+    console.warn(
+      `tree ${tree.properties.BAUM_ID} has no crown diameter [${tree.properties.KRONENDURCHMESSER}]. Skipping...`
+    );
+    return undefined;
+  }
+
   const id = tree.properties.BAUM_ID;
   const coordinates = tree.geometry.coordinates;
   // STAMMUMFANG / 100.0 = circumference in meters
