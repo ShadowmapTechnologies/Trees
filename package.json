@@ -1,0 +1,25 @@
+{
+  "name": "trees",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "download": "^8.0.0",
+    "rimraf": "^3.0.2"
+  },
+  "scripts": {
+    "clean": "rimraf data/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShadowmapTechnologies/trees.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ShadowmapTechnologies/trees/issues"
+  },
+  "homepage": "https://github.com/ShadowmapTechnologies/trees#readme"
+}
