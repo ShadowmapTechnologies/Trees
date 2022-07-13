@@ -16,35 +16,34 @@ async function execute() {
   let skipCount = 0;
 
   await Promise.all(
-    sources.map(async (source) => {
-      const filename = `${source.name}`;
-      const filePath = `1/${filename}.${source.extension}`;
+    sources.map(async ({ name, extension, url }) => {
+      const filePath = `1/${name}.${extension}`;
 
       if (existsSync(filePath)) {
         skipCount++;
         console.log(
           chalk.yellow(
-            `Skipping ${source.name} because it exists already at ${filePath}`
+            `Skipping ${name} because it exists already at ${filePath}`
           )
         );
         return;
       }
-      console.log(chalk.blue(`Downloading ${filename} from ${source.url}`));
+      console.log(chalk.blue(`Downloading ${name} from ${url}`));
 
       try {
-        const data = await download(source.url);
+        const data = await download(url);
 
         writeFileSync(filePath, data);
-        console.log(chalk.green(`Downloaded ${filename}`));
+        console.log(chalk.green(`Downloaded ${name}`));
 
-        if (source.extension === "zip") {
+        if (extension === "zip") {
           try {
-            execSync(`unzip -d ${process.cwd()}/1/unzip/ "1/${source.name}"`, {
+            execSync(`unzip -d ${process.cwd()}/1/unzip/ "1/${name}"`, {
               stdio: "inherit",
             });
-            console.log(chalk.green(`Unzipped ${filename} to ${filePath}`));
+            console.log(chalk.green(`Unzipped ${name} to ${filePath}`));
           } catch (err) {
-            console.error(chalk.red(`Error unzipping ${filename}:`, err));
+            console.error(chalk.red(`Error unzipping ${name}:`, err));
           }
         } else {
           execSync(
@@ -52,8 +51,8 @@ async function execute() {
           );
         }
       } catch (error) {
-        console.error(chalk.red(`Error while processing ${filename}: `), error);
-        execSync(`mv "1/${filename}" "1/${filename}.bad"`);
+        console.error(chalk.red(`Error while processing ${name}: `), error);
+        execSync(`mv "1/${name}" "1/${name}.bad"`);
         // remove the partially downloaded file?
       }
     })
