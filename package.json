@@ -11,7 +11,9 @@
     "rimraf": "^3.0.2"
   },
   "scripts": {
-    "clean-1": "rimraf 1/"
+    "clean-1": "rimraf 1/",
+    "clean-2": "rimraf 2/",
+    "clean-3": "rimraf 3/"
   },
   "repository": {
     "type": "git",

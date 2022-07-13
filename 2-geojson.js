@@ -5,40 +5,51 @@ import { execSync } from "child_process";
 import { existsSync, mkdirSync } from "fs";
 import { sources } from "./sources.js";
 
-["./data", "./data/geojson"].forEach((dir) => {
+["./2"].forEach((dir) => {
   if (!existsSync(dir)) {
     mkdirSync(dir);
   }
 });
 
+function check(name, source, destination) {
+  if (existsSync(destination)) {
+    console.log(
+      chalk.yellow(
+        `Skipping ${name} because it exists already at ${destination}`
+      )
+    );
+    return false;
+  }
+
+  if (!existsSync(source)) {
+    console.log(
+      chalk.yellow(`Skipping ${name} because no source file at ${source}`)
+    );
+    return false;
+  }
+  return true;
+}
+
 let skipCount = 0;
 
 async function execute() {
   await Promise.all(
-    sources.map(async (source) => {
-      const filePath = `data/unzip/${source.filename}`;
-      const destination = `data/geojson/${source.name}.geojson`;
-      let options = "";
+    sources.map(async ({ name }) => {
+      const source = `1/unzip/${name}.csv`;
+      const destination = `2/${name}.geojson`;
 
       try {
-        if (existsSync(destination)) {
-          console.log(
-            chalk.yellow(
-              `Skipping ${source.filename} because it exists already at ${destination}`
-            )
-          );
+        if (!check(name, source, destination)) {
           skipCount++;
           return;
         }
 
-        options += `-s_srs EPSG:4326 -oo Y_POSSIBLE_NAMES="Latitude" -oo X_POSSIBLE_NAMES="Longitude"`;
+        const options = `-s_srs EPSG:4326 -oo Y_POSSIBLE_NAMES="Latitude" -oo X_POSSIBLE_NAMES="Longitude"`;
 
-        console.log(chalk.blue(`Converting ${source.filename}`));
-        let cmd = `ogr2ogr -t_srs EPSG:4326 -gt 65536 ${options} -f GeoJSONSeq ${process.cwd()}/${destination} ${
-          source.gdal_options || source.gdalOptions || ""
-        } "${process.cwd()}/${filePath}"`;
+        console.log(chalk.blue(`Converting ${name}`));
+        let cmd = `ogr2ogr -t_srs EPSG:4326 -gt 65536 ${options} -f GeoJSONSeq ${process.cwd()}/${destination} "${process.cwd()}/${source}"`;
         console.log(cmd);
-        execSync(cmd, { cwd: "data" });
+        execSync(cmd);
 
         console.log(chalk.green(`Loaded ${source.filename}`));
         console.log(chalk.blue("Checking for null or bad geometry"));
