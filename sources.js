@@ -7,5 +7,9 @@ export const sources = [
       circumference: "trunk_girth",
       diameter_crown: "crown_diameter",
     },
+    area: [
+      [8002, 6167],
+      [8047, 6195],
+    ],
   },
 ];
