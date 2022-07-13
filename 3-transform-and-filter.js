@@ -40,7 +40,6 @@ function check(name, source, destination) {
 
 function crosswalk(tree, transformation) {
   // if they are already correct we use an identity function, otherwise a transformation needs to be provided
-  transformation = { ...fieldsIdentity, ...transformation };
   var originalFields = tree.properties;
 
   tree = {
@@ -48,6 +47,8 @@ function crosswalk(tree, transformation) {
     geometry: tree.geometry,
     properties: {},
   };
+
+  transformation = { ...fieldsIdentity, ...transformation };
 
   for (const prop of Object.keys(transformation)) {
     const val =
