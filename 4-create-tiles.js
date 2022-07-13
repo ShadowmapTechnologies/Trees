@@ -86,11 +86,12 @@ function makeValidJSONs(area) {
 
       content.shift(); // first line is a comma => remove it
       content.pop(); // last line is a new line => remove it
-      content.unshift("["); // add opening [
-      content.push("]"); // add closing [
-      content = content.join("\n"); // convert array back to string
+      const contentAsString = content.join(","); // convert array back to string with commas
 
-      writeFileSync(`${dist}/${zoom}/${i}/${j}${extension}`, content);
+      writeFileSync(
+        `${dist}/${zoom}/${i}/${j}${extension}`,
+        `[${contentAsString}]`
+      );
     }
   }
 }
