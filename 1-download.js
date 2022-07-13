@@ -6,7 +6,7 @@ import { sources } from "./sources.js";
 import { execSync } from "child_process";
 import chalk from "chalk";
 
-["./data", "./data/unzip"].forEach((dir) => {
+["./1", "./1/unzip"].forEach((dir) => {
   if (!existsSync(dir)) {
     mkdirSync(dir);
   }
@@ -17,8 +17,8 @@ async function execute() {
 
   await Promise.all(
     sources.map(async (source) => {
-      const filename = `${source.name}.zip`;
-      const filePath = `data/${filename}`;
+      const filename = `${source.name}`;
+      const filePath = `1/${filename}.${source.extension}`;
 
       if (existsSync(filename)) {
         skipCount++;
@@ -36,21 +36,27 @@ async function execute() {
 
         writeFileSync(filePath, data);
         console.log(chalk.green(`Downloaded ${filename}`));
-        console.log(chalk.blue(`Unzipping ${filename}`));
-        try {
+
+        if (source.extension === "zip") {
+          try {
+            execSync(`unzip -d ${process.cwd()}/1/unzip/ "1/${source.name}"`, {
+              stdio: "inherit",
+            });
+            console.log(chalk.green(`Unzipped ${filename} to ${filePath}`));
+          } catch (err) {
+            console.error(chalk.red(`Error unzipping ${filename}:`, err));
+          }
+        } else {
           execSync(
-            `unzip -d ${process.cwd()}/data/unzip/ "data/${source.name}"`,
+            `cp "${process.cwd()}/${filePath}" ${process.cwd()}/1/unzip/ `,
             {
               stdio: "inherit",
             }
           );
-          console.log(chalk.green(`Unzipped ${filename} to ${filePath}`));
-        } catch (err) {
-          console.error(chalk.red(`Error unzipping ${filename}:`, err));
         }
       } catch (error) {
-        console.error(chalk.red(`Error while unzipping ${filename}: `), error);
-        execSync(`mv "data/${filename}" "data/${filename}.bad"`);
+        console.error(chalk.red(`Error while processing ${filename}: `), error);
+        execSync(`mv "1/${filename}" "1/${filename}.bad"`);
         // remove the partially downloaded file?
       }
     })
