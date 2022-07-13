@@ -17,17 +17,6 @@ const dist = "./dist";
 const zoom = "14";
 const extension = ".json.ico";
 
-// DELETE DIST IF EXISTS
-if (existsSync(dist)) {
-  try {
-    rmSync(dist, { recursive: true });
-
-    console.log(chalk.blue(`Deleted folder ${dist}`));
-  } catch (err) {
-    console.error(chalk.red(`Error while deleting ${dist}.`));
-  }
-}
-
 [dist, `${dist}/${zoom}`].forEach((dir) => {
   if (!existsSync(dir)) {
     console.log(chalk.blue(`Create folder ${dir}`));
