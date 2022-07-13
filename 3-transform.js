@@ -92,7 +92,7 @@ function transform(source, destination, fieldTransformations) {
 async function execute() {
   await Promise.all(
     sources.map(async ({ name, fieldTransformations }) => {
-      const source = `data/geojson/${name}.geojson`;
+      const source = `2/${name}.geojson`;
       const destination = `3/${name}.geojson`;
 
       if (!check(name, source, destination)) {
