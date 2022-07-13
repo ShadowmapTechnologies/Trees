@@ -20,7 +20,7 @@ async function execute() {
       const filename = `${source.name}`;
       const filePath = `1/${filename}.${source.extension}`;
 
-      if (existsSync(filename)) {
+      if (existsSync(filePath)) {
         skipCount++;
         console.log(
           chalk.yellow(
@@ -48,10 +48,7 @@ async function execute() {
           }
         } else {
           execSync(
-            `cp "${process.cwd()}/${filePath}" ${process.cwd()}/1/unzip/ `,
-            {
-              stdio: "inherit",
-            }
+            `cp "${process.cwd()}/${filePath}" ${process.cwd()}/1/unzip/ `
           );
         }
       } catch (error) {
