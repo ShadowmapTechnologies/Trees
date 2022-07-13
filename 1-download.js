@@ -16,7 +16,7 @@ async function execute() {
   let skipCount = 0;
 
   await Promise.all(
-    sources.map(async ({ name, extension, url }) => {
+    sources.map(async ({ name, extension, url, zipContentName }) => {
       const filePath = `1/${name}.${extension}`;
 
       if (existsSync(filePath)) {
@@ -41,7 +41,11 @@ async function execute() {
             execSync(`unzip -d ${process.cwd()}/1/unzip/ "1/${name}"`, {
               stdio: "inherit",
             });
-            console.log(chalk.green(`Unzipped ${name} to ${filePath}`));
+            console.log(chalk.green(`Unzipped ${name} to ${zipContentName}`));
+            execSync(
+              `mv ${process.cwd()}/1/unzip/${zipContentName} "${process.cwd()}/1/unzip/${name}.csv"`
+            );
+            console.log(chalk.green(`Rename ${zipContentName} to ${name}.csv`));
           } catch (err) {
             console.error(chalk.red(`Error unzipping ${name}:`, err));
           }

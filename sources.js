@@ -2,7 +2,7 @@ export const sources = [
   {
     name: "madrid",
     extension: "zip",
-    filename: "madrid_trees.csv",
+    zipContentName: "madrid_trees.csv",
     url: "https://challenge.greemta.eu/data/green/trees_madrid.zip",
     fieldTransformations: {
       circumference: "trunk_girth",
