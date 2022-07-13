@@ -54,4 +54,4 @@ async function execute() {
 
 execute();
 
-console.log(`Finished transforming trees. Skip ount ${skipCount}.`);
+console.log(`Finished transforming trees. Skip count ${skipCount}.`);
