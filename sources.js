@@ -20,7 +20,6 @@ export const sources = [
     url: "https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:BAUMKATOGD&srsName=EPSG:4326&outputFormat=csv",
     fieldTransformations: {
       circumference: (tree) => Math.round(tree.STAMMUMFANG * 10) / 1000,
-      diameter_crown: "crown_diameter",
       height: (tree) => tree.BAUMHOEHE * 5 - 2.5,
       diameter_crown: (tree) => tree.KRONENDURCHMESSER * 3 - 1.5,
     },
