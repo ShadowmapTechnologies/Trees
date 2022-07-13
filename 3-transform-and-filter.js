@@ -55,14 +55,32 @@ function crosswalk(tree, transformation) {
       typeof transformation[prop] === "function"
         ? transformation[prop](originalFields)
         : originalFields[transformation[prop]];
-    if (val !== undefined) {
-      tree.properties[prop] = val;
-    }
+    tree.properties[prop] = val;
   }
+
+  return filter(tree);
+}
+
+function filter(tree) {
+  const { circumference, height, diameter_crown } = tree.properties;
+  if (!circumference || circumference <= 0 || 10 <= circumference) {
+    return undefined;
+  }
+
+  if (!height || height <= 0 || 50 <= height) {
+    return undefined;
+  }
+
+  if (!diameter_crown || diameter_crown <= 0 || 50 <= diameter_crown) {
+    return undefined;
+  }
+
   return tree;
 }
 
 function transform(source, destination, fieldTransformations) {
+  let removed = 0,
+    kept = 0;
   const destinationStream = createWriteStream(destination).on(
     "error",
     console.error
@@ -74,6 +92,12 @@ function transform(source, destination, fieldTransformations) {
       .on("data", function (tree) {
         const transformedTree = crosswalk(tree, fieldTransformations);
 
+        if (transformedTree === undefined) {
+          removed++;
+          return;
+        }
+
+        kept++;
         destinationStream.write(JSON.stringify(transformedTree) + "\n");
       })
       .on("error", (error) => {
@@ -83,8 +107,14 @@ function transform(source, destination, fieldTransformations) {
         );
         reject();
       })
-      .on("end", function () {
-        console.log(chalk.green(`Successfully processed file ${source}`));
+      .on("end", () => {
+        console.log(
+          chalk.green(
+            `Successfully processed file ${source}. Total processed ${
+              kept + removed
+            } trees, ${removed} removed.`
+          )
+        );
         resolve();
       });
   });

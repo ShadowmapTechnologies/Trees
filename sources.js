@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 export const sources = [
   {
     name: "madrid",
@@ -19,9 +21,27 @@ export const sources = [
     filename: "BAUMKATOGD.csv",
     url: "https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:BAUMKATOGD&srsName=EPSG:4326&outputFormat=csv",
     fieldTransformations: {
-      circumference: (tree) => Math.round(tree.STAMMUMFANG * 10) / 1000,
-      height: (tree) => tree.BAUMHOEHE * 5 - 2.5,
-      diameter_crown: (tree) => tree.KRONENDURCHMESSER * 3 - 1.5,
+      circumference: ({ STAMMUMFANG }) => {
+        if (STAMMUMFANG <= 0) {
+          return undefined;
+        }
+
+        return Math.round(STAMMUMFANG * 10) / 1000;
+      },
+      height: ({ BAUMHOEHE }) => {
+        if (BAUMHOEHE <= 0) {
+          return undefined;
+        }
+
+        return BAUMHOEHE * 5 - 2.5;
+      },
+      diameter_crown: ({ KRONENDURCHMESSER }) => {
+        if (KRONENDURCHMESSER <= 0) {
+          return undefined;
+        }
+
+        return KRONENDURCHMESSER * 3 - 1.5;
+      },
     },
     area: [
       [8922, 5672],
