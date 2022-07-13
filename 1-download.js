@@ -23,7 +23,7 @@ async function execute() {
       if (existsSync(filename)) {
         skipCount++;
         console.log(
-          chalk.blue(
+          chalk.yellow(
             `Skipping ${source.name} because it exists already at ${filePath}`
           )
         );
@@ -38,10 +38,13 @@ async function execute() {
         console.log(chalk.green(`Downloaded ${filename}`));
         console.log(chalk.blue(`Unzipping ${filename}`));
         try {
-          execSync(`unzip -d ${process.cwd()}/data/unzip/ "${filename}"`, {
-            stdio: "inherit",
-          });
-          console.log(chalk.green(`Unzipped ${filename} to `));
+          execSync(
+            `unzip -d ${process.cwd()}/data/unzip/ "data/${source.name}"`,
+            {
+              stdio: "inherit",
+            }
+          );
+          console.log(chalk.green(`Unzipped ${filename} to ${filePath}`));
         } catch (err) {
           console.error(chalk.red(`Error unzipping ${filename}:`, err));
         }
