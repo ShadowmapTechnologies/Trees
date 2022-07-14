@@ -5,6 +5,11 @@ import { createReadStream, existsSync, mkdirSync, createWriteStream } from "fs";
 import { sources } from "./sources.js";
 import ndjson from "ndjson";
 
+// sane maximum values
+const MAXIMUM_CIRCUMFERENCE = 10;
+const MAXIMUM_HEIGHT = 50;
+const MAXIMUM_DIAMETER_CROWN = 50;
+
 ["./3"].forEach((dir) => {
   if (!existsSync(dir)) {
     mkdirSync(dir);
@@ -63,15 +68,23 @@ function crosswalk(tree, transformation) {
 
 function filter(tree) {
   const { circumference, height, diameter_crown } = tree.properties;
-  if (!circumference || circumference <= 0 || 10 <= circumference) {
+  if (
+    !circumference ||
+    circumference <= 0 ||
+    MAXIMUM_CIRCUMFERENCE <= circumference
+  ) {
     return undefined;
   }
 
-  if (!height || height <= 0 || 50 <= height) {
+  if (!height || height <= 0 || MAXIMUM_HEIGHT <= height) {
     return undefined;
   }
 
-  if (!diameter_crown || diameter_crown <= 0 || 50 <= diameter_crown) {
+  if (
+    !diameter_crown ||
+    diameter_crown <= 0 ||
+    MAXIMUM_DIAMETER_CROWN <= diameter_crown
+  ) {
     return undefined;
   }
 
