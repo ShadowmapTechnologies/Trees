@@ -6,8 +6,8 @@ import { sources } from "./sources.js";
 import ndjson from "ndjson";
 
 // sane maximum values
-const MAXIMUM_CIRCUMFERENCE = 10;
-const MAXIMUM_HEIGHT = 50;
+const MAXIMUM_CIRCUMFERENCE = 20;
+const MAXIMUM_HEIGHT = 100;
 const MAXIMUM_DIAMETER_CROWN = 50;
 
 ["./3"].forEach((dir) => {
@@ -87,6 +87,10 @@ function filter(tree) {
   ) {
     return undefined;
   }
+
+  // if (height * 0.8 < diameter_crown) {
+  //   return undefined;
+  // }
 
   return tree;
 }
