@@ -34,8 +34,8 @@ let skipCount = 0;
 
 async function execute() {
   await Promise.all(
-    sources.map(async ({ name }) => {
-      const source = `1/unzip/${name}.csv`;
+    sources.map(async ({ name, extension }) => {
+      const source = `1/unzip/${name}.${extension}`;
       const destination = `2/${name}.geojson`;
 
       try {
@@ -44,7 +44,12 @@ async function execute() {
           return;
         }
 
-        const options = `-s_srs EPSG:4326 -oo GEOM_POSSIBLE_NAMES="SHAPE" -oo Y_POSSIBLE_NAMES="Latitude" -oo X_POSSIBLE_NAMES="Longitude"`;
+        const openOptions =
+          extension === "geojson"
+            ? ""
+            : `-oo GEOM_POSSIBLE_NAMES="SHAPE" -oo Y_POSSIBLE_NAMES="Latitude" -oo X_POSSIBLE_NAMES="Longitude"`;
+
+        const options = `-s_srs EPSG:4326 ${openOptions}`;
 
         console.log(chalk.blue(`Converting ${name}`));
         let cmd = `ogr2ogr -t_srs EPSG:4326 -gt 65536 ${options} -f GeoJSONSeq ${process.cwd()}/${destination} "${process.cwd()}/${source}"`;

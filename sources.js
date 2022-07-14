@@ -1,10 +1,24 @@
-import chalk from "chalk";
-
 export const sources = [
   {
+    name: "paris",
+    zipped: false,
+    extension: "geojson",
+    url: "https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr",
+    fieldTransformations: {
+      circumference: ({ circonferenceencm }) => circonferenceencm / 100,
+      diameter_crown: ({ hauteurenm }) => hauteurenm / 2,
+      height: "hauteurenm",
+    },
+    area: [
+      [8002, 6167],
+      [8047, 6195],
+    ],
+  },
+  {
     name: "madrid",
-    extension: "zip",
+    zipped: true,
     zipContentName: "madrid_trees.csv",
+    extension: "csv",
     url: "https://challenge.greemta.eu/data/green/trees_madrid.zip",
     fieldTransformations: {
       circumference: ({ trunk_girth }) => parseFloat(trunk_girth),
@@ -18,6 +32,7 @@ export const sources = [
   },
   {
     name: "vienna",
+    zipped: false,
     extension: "csv",
     filename: "BAUMKATOGD.csv",
     url: "https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:BAUMKATOGD&srsName=EPSG:4326&outputFormat=csv",

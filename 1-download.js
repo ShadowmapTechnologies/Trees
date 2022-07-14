@@ -16,8 +16,8 @@ async function execute() {
   let skipCount = 0;
 
   await Promise.all(
-    sources.map(async ({ name, extension, url, zipContentName }) => {
-      const filePath = `1/${name}.${extension}`;
+    sources.map(async ({ name, extension, url, zipped, zipContentName }) => {
+      const filePath = `1/${name}.${zipped ? "zip" : extension}`;
 
       if (existsSync(filePath)) {
         skipCount++;
@@ -36,7 +36,7 @@ async function execute() {
         writeFileSync(filePath, data);
         console.log(chalk.green(`Downloaded ${name}`));
 
-        if (extension === "zip") {
+        if (zipped) {
           try {
             execSync(`unzip -d ${process.cwd()}/1/unzip/ "1/${name}"`, {
               stdio: "inherit",
