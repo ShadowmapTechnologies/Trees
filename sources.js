@@ -7,8 +7,9 @@ export const sources = [
     zipContentName: "madrid_trees.csv",
     url: "https://challenge.greemta.eu/data/green/trees_madrid.zip",
     fieldTransformations: {
-      circumference: "trunk_girth",
-      diameter_crown: "crown_diameter",
+      circumference: ({ trunk_girth }) => parseFloat(trunk_girth),
+      diameter_crown: ({ crown_diameter }) => parseFloat(crown_diameter),
+      height: ({ height }) => parseFloat(height),
     },
     area: [
       [8002, 6167],
@@ -22,25 +23,16 @@ export const sources = [
     url: "https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:BAUMKATOGD&srsName=EPSG:4326&outputFormat=csv",
     fieldTransformations: {
       circumference: ({ STAMMUMFANG }) => {
-        if (STAMMUMFANG <= 0) {
-          return undefined;
-        }
-
-        return Math.round(STAMMUMFANG * 10) / 1000;
+        const c = parseFloat(STAMMUMFANG);
+        return c <= 0 ? undefined : Math.round(c * 10) / 1000;
       },
       height: ({ BAUMHOEHE }) => {
-        if (BAUMHOEHE <= 0) {
-          return undefined;
-        }
-
-        return BAUMHOEHE * 5 - 2.5;
+        const h = parseFloat(BAUMHOEHE);
+        return h <= 0 ? undefined : h * 5 - 2.5;
       },
       diameter_crown: ({ KRONENDURCHMESSER }) => {
-        if (KRONENDURCHMESSER <= 0) {
-          return undefined;
-        }
-
-        return KRONENDURCHMESSER * 3 - 1.5;
+        const d = parseFloat(KRONENDURCHMESSER);
+        return d <= 0 ? undefined : d * 3 - 1.5;
       },
     },
     area: [
