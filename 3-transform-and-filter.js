@@ -88,9 +88,9 @@ function filter(tree) {
     return undefined;
   }
 
-  // if (height * 0.8 < diameter_crown) {
-  //   return undefined;
-  // }
+  if (height < diameter_crown) {
+    return undefined;
+  }
 
   return tree;
 }
