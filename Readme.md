@@ -1,4 +1,4 @@
-# Trees
+# Trees 🌲 🌴 🌳
 
 The following repo:
 
@@ -33,7 +33,3 @@ Run `npm run stage-3` to execute the third stage. It reads every line of the geo
 ## 4-create-tiles.js
 
 Run `npm run stage-4` to execute the fourth stage. It reads all geoJSON files from stage 3 and splits the trees in it corresponding tile files depending on its coordinates. The tiles can be found under the folder `dist/`.
-
-## Afterwards
-
-Use Mircosoft Azure Storage Explorer to upload the tiles to Azure. You can use the C# code in the Shadowmap repository in the folder `blob-storage-automation` to set the caching headers on Azure.
