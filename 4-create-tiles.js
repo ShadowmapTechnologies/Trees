@@ -14,7 +14,7 @@ import { sources } from "./sources.js";
 import ndjson from "ndjson";
 
 const dist = "./dist";
-const zoom = "14";
+const zoom = 14;
 const extension = ".json.ico";
 
 [dist, `${dist}/${zoom}`].forEach((dir) => {
