@@ -6,7 +6,7 @@ export const sources = [
     url: "https://opendata.paris.fr/explore/dataset/les-arbres/download/?format=geojson&timezone=Europe/Berlin&lang=fr",
     fieldTransformations: {
       circumference: ({ circonferenceencm }) => circonferenceencm / 100,
-      diameter_crown: ({ hauteurenm }) => Math.max(hauteurenm * 0.65, 31),
+      diameter_crown: ({ hauteurenm }) => Math.min(hauteurenm * 0.65, 31),
       height: "hauteurenm",
     },
     area: [
